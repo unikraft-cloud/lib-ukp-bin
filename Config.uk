@@ -1,0 +1,13 @@
+config LIBUKP
+	bool "ukp: Unikraft platform guest additions"
+	default y
+	depends on KVM_VMM_FIRECRACKER
+	depends on (ARCH_X86_64 || ARCH_ARM_64)
+	select LIBNOLIBC if (!HAVE_LIBC && !LIB_MUSL)
+	select LIBUKNOFAULT
+	select LIBUKDEBUG
+	select LIBUKVMEM
+	select PAGING
+	help
+		Integrations, drivers, and additions for guests running
+		on the Unikraft platform (KraftCloud).

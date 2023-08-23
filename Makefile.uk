@@ -1,0 +1,15 @@
+ifeq ($(CONFIG_OPTIMIZE_PIE),y)
+ifeq ($(CONFIG_LIBMUSL),y)
+UK_OLIBS-$(CONFIG_LIBUKP) += $(IMPORT_BASE)/libukp-$(CONFIG_UK_ARCH)-musl-pie.o
+else
+UK_OLIBS-$(CONFIG_LIBUKP) += $(IMPORT_BASE)/libukp-$(CONFIG_UK_ARCH)-nolibc-pie.o
+endif
+else
+ifeq ($(CONFIG_LIBMUSL),y)
+UK_OLIBS-$(CONFIG_LIBUKP) += $(IMPORT_BASE)/libukp-$(CONFIG_UK_ARCH)-musl.o
+else
+UK_OLIBS-$(CONFIG_LIBUKP) += $(IMPORT_BASE)/libukp-$(CONFIG_UK_ARCH)-nolibc.o
+endif
+endif
+
+UK_LIBID_EXTRA-$(CONFIG_LIBUKP) += libukp
