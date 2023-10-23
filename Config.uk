@@ -6,8 +6,9 @@ config LIBUKP
 	select LIBNOLIBC if (!HAVE_LIBC && !LIB_MUSL)
 	select LIBUKNOFAULT
 	select LIBUKDEBUG
-	select LIBUKVMEM
 	select PAGING
+	select LIBUKVMEM
+	select LIBUKSCHED
 	help
 		Integrations, drivers, and additions for guests running
 		on the Unikraft platform (KraftCloud).
