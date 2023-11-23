@@ -1,15 +1,20 @@
+ifeq ($(CONFIG_LIBMUSL),y)
+LIBUKP_OLIBC:=-musl
+else
+LIBUKP_OLIBC:=-nolibc
+endif
+ifeq ($(findstring $(CONFIG_LIBVFSCORE),$(CONFIG_LIBUKNETDEV)),y)
+LIBUKP_OVFS:=-vfs
+LIBUKP_ONET:=-net
+else
+LIBUKP_OVFS:=
+LIBUKP_ONET:=
+endif
 ifeq ($(CONFIG_OPTIMIZE_PIE),y)
-ifeq ($(CONFIG_LIBMUSL),y)
-UK_OLIBS-$(CONFIG_LIBUKP) += $(IMPORT_BASE)/libukp-$(CONFIG_UK_ARCH)-musl-pie.o
+LIBUKP_OPIE:=-pie
 else
-UK_OLIBS-$(CONFIG_LIBUKP) += $(IMPORT_BASE)/libukp-$(CONFIG_UK_ARCH)-nolibc-pie.o
-endif
-else
-ifeq ($(CONFIG_LIBMUSL),y)
-UK_OLIBS-$(CONFIG_LIBUKP) += $(IMPORT_BASE)/libukp-$(CONFIG_UK_ARCH)-musl.o
-else
-UK_OLIBS-$(CONFIG_LIBUKP) += $(IMPORT_BASE)/libukp-$(CONFIG_UK_ARCH)-nolibc.o
-endif
+LIBUKP_OPIE:=
 endif
 
+UK_OLIBS-$(CONFIG_LIBUKP) += $(IMPORT_BASE)/libukp-$(CONFIG_UK_ARCH)$(LIBUKP_OVFS)$(LIBUKP_ONET)$(LIBUKP_OLIBC)$(LIBUKP_OPIE).o
 UK_LIBID_EXTRA-$(CONFIG_LIBUKP) += libukp
