@@ -9,6 +9,7 @@ config LIBUKP
 	select PAGING
 	select LIBUKVMEM
 	select LIBUKSCHED
+	select LIBVFSCORE_FSTAB if LIBVFSCORE
 	help
 		Integrations, drivers, and additions for guests running
 		on the Unikraft platform (KraftCloud).
