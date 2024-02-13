@@ -9,8 +9,19 @@ config LIBUKP
 	select PAGING
 	select LIBUKVMEM
 	select LIBUKSCHED
+	select LIBUKP_DEPS
+	help
+		Integrations, drivers, and additions for guests running
+		on the Unikraft platform (KraftCloud).
+
+config LIBUKP_DEPS
+	bool "ukp-deps: KraftCloud configuration dependencies"
+	default y
 	select LIBUKLIBPARAM
+	select LIBUKBOOT_MAINTHREAD if LIBUKBOOT && !LIBUKBOOT_NOSCHED && !LIBUKBOOT_NOALLOC
+	select LIBUKBOOT_SHUTDOWNREQ_HANDLER if LIBUKBOOT && !LIBUKBOOT_NOSCHED && !LIBUKBOOT_NOALLOC
 	select LIBPOSIX_ENVIRON_LIBPARAM if LIBPOSIX_ENVIRON
+	select LIBPOSIX_SOCKET_EVENTS if LIBPOSIX_SOCKET
 	select LIBVFSCORE_AUTOMOUNT_UP if LIBVFSCORE
 	select LIBUKNETDEV_EINFO_LIBPARAM if LIBUKNETDEV
 	select APPELFLOADER_AUTOGEN if APPELFLOADER_DEPENDENCIES && LIBUKNETDEV
@@ -22,7 +33,9 @@ config LIBUKP
 	select LWIP_LOOPIF if LIBLWIP
 	select LWIP_AUTOIFACE if LIBLWIP
 	select LWIP_IPV4 if LIBLWIP
-	select LWIP_DNS if LIBLWIP
+	imply LWIP_WAITIFACE if LIBLWIP && LWIP_DHCP
+	imply LWIP_DNS if LIBLWIP && !APPELFLOADER
+	imply LIBMUSL_NETWORK_LWIP_DNS if LIBMUSL_NETWORK && LIBLWIP && LIBMUSL && !APPELFLOADER
 	help
-		Integrations, drivers, and additions for guests running
-		on the Unikraft platform (KraftCloud).
+		Configures Unikraft libraries and known applications
+		to work seamlessly with KraftCloud.
